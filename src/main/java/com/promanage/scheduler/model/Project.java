@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity // Tells Hibernate: "This class maps to a DB table"
 @Table(name = "projects")
@@ -22,6 +23,9 @@ public class Project {
     private Integer deadline; // 1=Mon, 5=Fri
 
     private BigDecimal revenue;
+
+    @Column(name = "created_date")
+    private LocalDate createdDate;
 
     @Enumerated(EnumType.STRING)
     private ProjectStatus status = ProjectStatus.PENDING;

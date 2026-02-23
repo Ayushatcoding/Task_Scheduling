@@ -1,14 +1,16 @@
 package com.promanage.scheduler.controller;
 
+import com.promanage.scheduler.dto.MaxProfitScheduleResponse;
 import com.promanage.scheduler.model.Project;
 import com.promanage.scheduler.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController // Tells Spring: "I speak JSON"
-@RequestMapping("/api/projects") // Base URL: http://localhost:8080/api/projects
+@RequestMapping({"/api/projects", "/projects"})
 @CrossOrigin(origins = "*") // Allows your future React frontend to talk to this
 public class ProjectController {
 
@@ -31,5 +33,12 @@ public class ProjectController {
     @PostMapping("/schedule")
     public List<Project> generateSchedule() {
         return projectService.generateOptimalSchedule();
+    }
+
+    @GetMapping("/max-profit")
+    public MaxProfitScheduleResponse getMaxProfitSchedule() {
+        List<Project> selectedProjects = projectService.getMaxProfitSchedule();
+        BigDecimal totalProfit = projectService.getTotalProfit(selectedProjects);
+        return new MaxProfitScheduleResponse(selectedProjects, totalProfit);
     }
 }
